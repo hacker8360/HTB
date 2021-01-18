@@ -1,0 +1,11 @@
+HTB invite Challenge
+Invite pageWe don't have the invite code and also we don't know the format of the invite code otherwise we should have generate it
+so let search with the console of the page as we got the hint to check the console after checking the console we get to knew about a function called makeInvitecode() let execute the function OMG we got the secret code we got the encoded data as and it was encoded by ROT13
+makeInviteCode()
+Finding Secret dataNow let check ROT 13 on data and decode it Link -> ROT13onlineDecoder
+Decoding textTo get the the code we get have to post a request on /api/invite/generate
+Lets open cmd and make a post using curl
+curl -XPOST https://www.hackthebox.eu/api/invite/generate
+invite encode codeWoooo! we get the code but it's in encoded format and the format seems like base64 encode text let try to decode using base64 decoder by using online tools
+invite codeWe got the invite code 
+Invite challenge completed
