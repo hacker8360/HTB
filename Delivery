@@ -1,0 +1,71 @@
+Let Start with scanning with Nmap
+nmap -A -sC -sV 10.10.10.222 -Pn
+Host discovery disabled (-Pn). All addresses will be marked ‘up’ and scan times will be slower.
+Starting Nmap 7.91 ( https://nmap.org ) at 2021–01–18 13:52 GMT
+Nmap scan report for delivery.htb (10.10.10.222)
+Host is up (0.24s latency).
+Not shown: 998 closed ports
+PORT STATE SERVICE VERSION
+22/tcp open ssh OpenSSH 7.9p1 Debian 10+deb10u2 (protocol 2.0)
+| ssh-hostkey:
+| 2048 9c:40:fa:85:9b:01:ac:ac:0e:bc:0c:19:51:8a:ee:27 (RSA)
+| 256 5a:0c:c0:3b:9b:76:55:2e:6e:c4:f4:b9:5d:76:17:09 (ECDSA)
+|_ 256 b7:9d:f7:48:9d:a2:f2:76:30:fd:42:d3:35:3a:80:8c (ED25519)
+80/tcp open http nginx 1.14.2
+|_http-server-header: nginx/1.14.2
+|_http-title: Welcome
+Image for post
+Nmap Scanning report
+We can see 2 ports are open port 22 and port 80 let check with port 80
+Image for post
+Port 80 Website
+Seems like it is having command line injections lets click on contact us and check for the further
+Create a ticket and check by generating the new ticket use false details in Hlep topic use contact us
+Image for post
+creating new ticket
+Woooo! we get something that is the email address form my case it is 8996492@delivery.htb
+Image for post
+Getting ticket id
+Now create a account to the to mattermost with the given mail i.e 8996492@delivery.htb
+Image for post
+Creating the account
+Its asking for verification let but we don’t have any email id like that what we have let go to check ticket from where we have created the ticket
+Hurry we got the verification link
+Image for post
+Verification Link
+We got login to the mattermost now go in internal and follow the step as
+Image for post
+Login to matter most
+Hurry we got the SSH credentials i.e maildeliverer : Youve_G0t_Mail!
+Image for post
+SSH credentials
+Let take the shell connections go to the terminal and type :
+ssh maildeliverer@10.10.10.222
+Image for post
+shell access
+Hurry we got the user text file now use command
+cat user.txt
+and get your user file
+Image for post
+we got the user flag
+Let Move to root flag
+Let move our directory to opt-mattermost-config by
+cd /opt/mattermost/config
+now cat the config.json we got the mysql login and password mmuser:Crack_The_MM_Admin_PW
+Image for post
+mysql username and password
+Let’s Login to sql database and check what we get actually to login in :-
+mysql -u mmuser -p ‘Crack_The_MM_Admin_PW’ mattermost
+after login change your database to mattermost by
+use mattermost
+then try to find the root password hash from Users by
+select Password from Users where Username -= ‘root’ ;
+you got the password hash: $2a$10$VM6EeymRxJ29r8Wjkr8Dtev0O.1STWb4.4ScG.anuu7v0EFJwgjjO
+Image for post
+root Password hash
+Now try to decode the hash (John will not work so use the following link to download the tool
+stealthsploit/Optimised-hashcat-Rule
+This is a custom hashcat rule, the original supporting blog post of which I wrote when I worked at…
+github.com
+we got the root password i.e PleaseSubscribe!21
+Now Login as a root use by su and then provide the password. hurry we got the root access
